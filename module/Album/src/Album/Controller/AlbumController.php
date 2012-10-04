@@ -49,7 +49,7 @@ class AlbumController extends AbstractActionController
     }
 
     public function editAction()
-    {
+    {//editAction
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('album', array(
