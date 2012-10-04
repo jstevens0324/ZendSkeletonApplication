@@ -18,7 +18,7 @@ use Album\Form\AlbumForm;
 class AlbumController extends AbstractActionController
 {
     protected $albumTable;
-//test change
+
     public function indexAction()
     {
         return new ViewModel(array(
