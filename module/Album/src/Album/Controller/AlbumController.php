@@ -27,7 +27,7 @@ class AlbumController extends AbstractActionController
     }
 
     public function addAction()
-    {//shu lalala
+    {
         $form = new AlbumForm();
         $form->get('submit')->setValue('Add');
 
