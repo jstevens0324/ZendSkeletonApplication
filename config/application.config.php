@@ -3,6 +3,7 @@ return array(
     'modules' => array(
         'Application',
         'Album',
+        'Radio',
         'ZfcBase',
         'ZfcUser',
     ),
@@ -16,3 +17,4 @@ return array(
         ),
     ),
 );
+
