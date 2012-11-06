@@ -10,7 +10,7 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Radio/Controller/Radio' => 'Radio/Controller/RadioController',
+            'Radio\Controller\Radio' => 'Radio\Controller\RadioController',
         ),
     ),
 
@@ -35,7 +35,7 @@ return array(
 
     'view_manager' => array(
         'template_path_stack' => array(
-            'radio' => __DIR__ . '/./view',
+            'radio' => __DIR__ . '/../view',
         ),
     ),
 );

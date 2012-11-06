@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: mihai
- * Date: 10/24/12
- * Time: 4:49 PM
- * To change this template use File | Settings | File Templates.
- */
 
-namespace Application\Controller;
+namespace ApplicationTest\Controller;
 
+use ApplicationTest\Bootstrap;
+use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use Application\Controller\IndexController;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -26,15 +21,19 @@ class IndexControllerTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $bootstrap        = \Zend\Mvc\Application::init(include 'config/application.config.php');
+        $serviceManager = Bootstrap::getServiceManager();
         $this->controller = new IndexController();
         $this->request    = new Request();
         $this->routeMatch = new RouteMatch(array('controller' => 'index'));
-        $this->event      = $bootstrap->getMvcEvent();
+        $this->event      = new MvcEvent();
+        $config = $serviceManager->get('Config');
+        $routerConfig = isset($config['router']) ? $config['router'] : array();
+        $router = HttpRouter::factory($routerConfig);
+
+        $this->event->setRouter($router);
         $this->event->setRouteMatch($this->routeMatch);
         $this->controller->setEvent($this->event);
-        $this->controller->setEventManager($bootstrap->getEventManager());
-        $this->controller->setServiceLocator($bootstrap->getServiceManager());
+        $this->controller->setServiceLocator($serviceManager);
     }
 
     public function testIndexActionCanBeAccessed()
@@ -45,6 +44,5 @@ class IndexControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 }

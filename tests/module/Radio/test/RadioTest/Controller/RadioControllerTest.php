@@ -7,13 +7,15 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace Radio\Controller;
+namespace RadioTest\Controller;
 
+use RadioTest\Bootstrap;
 use Radio\Controller\RadioController;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use PHPUnit_Framework_TestCase;
 
 class RadioControllerTest extends PHPUnit_Framework_TestCase
@@ -27,7 +29,7 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $serviceManager = Bootstrap::getServiceManager();
-        $this->controller = new AlbumController();
+        $this->controller = new RadioController();
         $this->request    = new Request();
         $this->routeMatch = new RouteMatch(array('controller' => 'index'));
         $this->event      = new MvcEvent();
@@ -48,7 +50,6 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
     public function testDeleteActionCanBeAccessed()
@@ -59,7 +60,6 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
     public function testEditActionCanBeAccessed()
@@ -70,7 +70,6 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
     public function testIndexActionCanBeAccessed()
@@ -81,7 +80,6 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
 }
