@@ -14,8 +14,12 @@ use Zend\View\Model\ViewModel;
 
 class RadioController extends AbstractActionController
 {
-    public function indexAction(){
+    protected $radioTable;
 
+    public function indexAction(){
+        return new ViewModel(array(
+            'radios' => $this->getRadioTable()->fetchAll(),
+        ));
     }
 
     public function addAction(){
@@ -28,5 +32,14 @@ class RadioController extends AbstractActionController
 
     public function deleteAction(){
 
+    }
+
+    public function getRadioTable()
+    {
+        if (!$this->radioTable) {
+            $sm = $this->getServiceLocator();
+            $this->radioTable = $sm->get('Radio\Model\RadioTable');
+        }
+        return $this->radioTable;
     }
 }

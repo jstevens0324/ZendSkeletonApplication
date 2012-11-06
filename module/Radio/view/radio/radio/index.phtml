@@ -1,0 +1,30 @@
+<?php
+// module/Album/view/album/album/index.phtml:
+
+$title = 'My radio stations';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url('radio', array('action'=>'add'));?>">Add new radio</a>
+</p>
+
+<table class="table">
+<tr>
+    <th>Radio</th>
+    <th>Link</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($radios as $radio) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($radio->link);?></td>
+    <td><?php echo $this->escapeHtml($radio->radio);?></td>
+    <td>
+        <a href="<?php echo $this->url('radio',
+            array('action'=>'edit', 'id' => $radio->id));?>">Edit</a>
+        <a href="<?php echo $this->url('radio',
+            array('action'=>'delete', 'id' => $radio->id));?>">Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>

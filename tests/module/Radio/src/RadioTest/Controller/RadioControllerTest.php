@@ -7,15 +7,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace RadioTest\Controller;
+namespace Radio\Controller;
 
-use RadioTest\Bootstrap;
 use Radio\Controller\RadioController;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
-use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use PHPUnit_Framework_TestCase;
 
 class RadioControllerTest extends PHPUnit_Framework_TestCase
@@ -26,20 +24,9 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
     protected $routeMatch;
     protected $event;
 
-    protected function setUp()
+    public function testGetRadioTableReturnsAnInstanceOfRadioTable()
     {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->controller = new RadioController();
-        $this->request    = new Request();
-        $this->routeMatch = new RouteMatch(array('controller' => 'index'));
-        $this->event      = new MvcEvent();
-        $config = $serviceManager->get('Config');
-        $routerConfig = isset($config['router']) ? $config['router'] : array();
-        $router = HttpRouter::factory($routerConfig);
-        $this->event->setRouter($router);
-        $this->event->setRouteMatch($this->routeMatch);
-        $this->controller->setEvent($this->event);
-        $this->controller->setServiceLocator($serviceManager);
+        $this->assertInstanceOf('Radio\Model\RadioTable', $this->controller->getRadioTable());
     }
 
     public function testAddActionCanBeAccessed()
@@ -50,6 +37,7 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
     public function testDeleteActionCanBeAccessed()
@@ -60,6 +48,7 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
     public function testEditActionCanBeAccessed()
@@ -70,6 +59,7 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
     public function testIndexActionCanBeAccessed()
@@ -80,6 +70,19 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
+    protected function setUp()
+    {
+        $bootstrap        = \Zend\Mvc\Application::init(include 'config/application.config.php');
+        $this->controller = new RadioController();
+        $this->request    = new Request();
+        $this->routeMatch = new RouteMatch(array('controller' => 'index'));
+        $this->event      = $bootstrap->getMvcEvent();
+        $this->event->setRouteMatch($this->routeMatch);
+        $this->controller->setEvent($this->event);
+        $this->controller->setEventManager($bootstrap->getEventManager());
+        $this->controller->setServiceLocator($bootstrap->getServiceManager());
+    }
 }

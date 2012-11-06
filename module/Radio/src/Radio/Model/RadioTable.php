@@ -58,7 +58,7 @@ class RadioTable
         }
     }
 
-    public function deletRadio($id) {
+    public function deleteRadio($id) {
         $this->tableGateway->delete(array('id' => $id));
     }
 }
