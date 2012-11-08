@@ -11,6 +11,8 @@ namespace Radio\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Radio\Model\Radio;
+use Radio\Form\RadioForm;
 
 class RadioController extends AbstractActionController
 {
@@ -23,15 +25,81 @@ class RadioController extends AbstractActionController
     }
 
     public function addAction(){
+        $form = new RadioForm();
+        $form->get('submit')->setValue('Add');
 
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $radio = new Radio();
+            $form->setInputFilter($radio->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $radio->exchangeArray($form->getData());
+                $this->getRadioTable()->saveRadio($radio);
+
+                // Redirect to list of radios
+                return $this->redirect()->toRoute('radio');
+            }
+        }
+        return array('form' => $form);
     }
 
     public function  editAction(){
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('radio', array(
+                'action' => 'add'
+            ));
+        }
+        $radio = $this->getRadioTable()->getRadio($id);
 
+        $form  = new RadioForm();
+        $form->bind($radio);
+        $form->get('submit')->setAttribute('value', 'Edit');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($radio->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->getRadioTable()->saveRadio($form->getData());
+
+                // Redirect to list of albums
+                return $this->redirect()->toRoute('radio');
+            }
+        }
+
+        return array(
+            'id' => $id,
+            'form' => $form,
+        );
     }
 
     public function deleteAction(){
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('radio');
+        }
 
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del == 'Yes') {
+                $id = (int) $request->getPost('id');
+                $this->getRadioTable()->deleteRadio($id);
+            }
+
+            // Redirect to list of albums
+            return $this->redirect()->toRoute('radio');
+        }
+
+        return array(
+            'id'    => $id,
+            'radio' => $this->getRadioTable()->getRadio($id)
+        );
     }
 
     public function getRadioTable()
