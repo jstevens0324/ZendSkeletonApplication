@@ -40,7 +40,7 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
-    public function testDeleteActionCanBeAccessed()
+    /*public function testDeleteActionCanBeAccessed()
     {
         $this->routeMatch->setParam('action', 'delete');
 
@@ -60,7 +60,7 @@ class RadioControllerTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
-    }
+    }*/
 
     public function testIndexActionCanBeAccessed()
     {

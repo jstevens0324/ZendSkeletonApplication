@@ -4,8 +4,7 @@ return array(
         'Application',
         'Album',
         'Radio',
-        //'ZfcBase',
-        //'ZfcUser',
+        'RSS',
     ),
     'module_listener_options' => array(
         'config_glob_paths'    => array(
