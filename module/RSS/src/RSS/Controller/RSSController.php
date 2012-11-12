@@ -20,10 +20,13 @@ class RSSController extends AbstractActionController
     private $reader;
     public function indexAction()
     {
+        $cache = \Zend\Cache\StorageFactory::adapterFactory('Memory');
+
+        \Zend\Feed\Reader\Reader::setCache($cache);
+        \Zend\Feed\Reader\Reader::useHttpConditionalGet();
         $this->reader = new Reader();
         try {
-            $slashdotRss =
-                $this->reader->import('http://rss.slashdot.org/Slashdot/slashdot');
+            $slashdotRss = \Zend\Feed\Reader\Reader::import('http://www.planet-php.net/rdf/');
         } catch (Zend\Feed\Exception\Reader\RuntimeException $e) {
             // feed import failed
             echo "Exception caught importing feed: {$e->getMessage()}\n";
@@ -35,6 +38,7 @@ class RSSController extends AbstractActionController
             'title'       => $slashdotRss->getTitle(),
             'link'        => $slashdotRss->getLink(),
             'description' => $slashdotRss->getDescription(),
+            'author'      => $slashdotRss->getAuthor(),
             'items'       => array()
             );
 
@@ -43,10 +47,40 @@ class RSSController extends AbstractActionController
             $channel['items'][] = array(
                 'title'       => $item->getTitle(),
                 'link'        => $item->getLink(),
-                'description' => $item->getDescription()
+                'description' => $item->getDescription(),
+                'author'      => $item->getAuthor(),
                 );
         }
 
         return array('channel' => $channel);
     }
+
+    public function importFeedAction()
+    {
+        $feeds = new Reader();
+        $feed = $feeds->import('http://www.planet-php.net/rdf/');
+        $data = array(
+            'title'         => $feed->getTitle(),
+            'link'          => $feed->getLink(),
+            'dateModified'  => $feed->getDateModified(),
+            'description'  => $feed->getDescription(),
+            'language'     => $feed->getLanguage(),
+            'entries'      => array(),
+        );
+
+        foreach ($feed as $entry) {
+            $edata = array(
+                'title'        => $entry->getTitle(),
+                'description'  => $entry->getDescription(),
+                'dateModified' => $entry->getDateModified(),
+                'authors'      => $entry->getAuthors(),
+                'link'         => $entry->getLink(),
+                'content'      => $entry->getContent()
+            );
+            $data['entries'][] = $edata;
+        }
+
+        return array('data' => $data);
+    }
+
 }

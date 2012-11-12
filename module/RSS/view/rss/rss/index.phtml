@@ -3,6 +3,7 @@
 <tr>
     <td><?php echo $feed['title'];?></td>
     <td><a href="<?=$feed['link']?>">Feed link</a></td>
+    <td><?php echo $feed['author']['name'];?></td>
     <td><?php echo $feed['description'];?></td>
 </tr>
 <?php endforeach; ?>

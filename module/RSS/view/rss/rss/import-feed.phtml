@@ -1,0 +1,11 @@
+<table class="table">
+<?php foreach($data['entries'] as $feed) :?>
+<tr>
+    <td><?php echo $feed['title'];?></td>
+    <td><?php echo $feed['description'];?></td>
+    <td><?php echo $feed['authors']['name'];?></td>
+    <td><a href="<?=$feed['link']?>">Feed link</a></td>
+    <td><?php echo $feed['content'];?></td>
+</tr>
+<?php endforeach; ?>
+</table>
