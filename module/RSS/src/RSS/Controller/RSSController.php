@@ -14,6 +14,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Feed\Reader\Reader;
 use Zend\View\Helper\HeadLink;
+use RSS\Form\RSSComment;
+use RSS\Form\RSSCommentFilter;
 
 class RSSController extends AbstractActionController
 {
@@ -130,6 +132,13 @@ class RSSController extends AbstractActionController
          * You can substitute "atom" with "rss" to generate an RSS 2.0 feed.
          */
         $out = $feed->export('atom');
+    }
+
+    public function addFeedComment()
+    {
+        $form = new RSSComment();
+        $form->get('submit')->setValue('Add');
+
     }
 
 }
