@@ -9,6 +9,7 @@
 
 namespace RSS\Model;
 
+use RSS\Form\RSSFormFilter;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\AbstractTableGateway;
@@ -21,7 +22,7 @@ class RSSTable extends AbstractTableGateway
     {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
-        //$this->resultSetPrototype->setArrayObjectPrototype(new Album());
+        //$this->resultSetPrototype->setArrayObjectPrototype(new RSSCommentFilter());
         $this->initialize();
     }
 
@@ -29,5 +30,19 @@ class RSSTable extends AbstractTableGateway
     {
         $resultSet = $this->select();
         return $resultSet;
+    }
+
+    public function saveRSSComment(RSSFormFilter $rssComment)
+    {
+        $data = array(
+            'author'    => $rssComment->author,
+            'comment'   => $rssComment->comment,
+            'email'     => $rssComment->email,
+        );
+        $id = (int) $rssComment->id;
+        if ($id == 0) {
+            $this->insert($data);
+        }
+
     }
 }

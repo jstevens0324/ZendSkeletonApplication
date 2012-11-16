@@ -9,6 +9,8 @@
 // module/RSS/Module.php
 namespace RSS;
 
+use RSS\Model\RSSTable;
+
 class Module
 {
     public function getAutoloaderConfig(){
@@ -26,5 +28,18 @@ class Module
 
     public function getConfig(){
         return include __DIR__ . '/config/module.config.php';
+    }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'RSS\Model\RSSTable' =>  function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table     = new RSSTable($dbAdapter);
+                    return $table;
+                },
+            ),
+        );
     }
 }

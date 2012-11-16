@@ -15,11 +15,15 @@ use Zend\View\Model\ViewModel;
 use Zend\Feed\Reader\Reader;
 use Zend\View\Helper\HeadLink;
 use RSS\Form\RSSComment;
-use RSS\Form\RSSCommentFilter;
+use RSS\Form\RSSFormFilter;
+use RSS\Model\RSSTable;
+use Zend\Loader\StandardAutoloader;
 
 class RSSController extends AbstractActionController
 {
     private $reader;
+    protected $rssTable;
+
     public function indexAction()
     {
         $cache = \Zend\Cache\StorageFactory::adapterFactory('Memory');
@@ -134,11 +138,45 @@ class RSSController extends AbstractActionController
         $out = $feed->export('atom');
     }
 
-    public function addFeedComment()
+    public function addFeedCommentAction()
     {
         $form = new RSSComment();
         $form->get('submit')->setValue('Add');
 
+        $request = $this->getRequest();
+        if($request->isPost()) {
+            $rssComment = new RSSFormFilter();
+
+            $form->setInputFilter($rssComment->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $rssComment->exchangeArray($form->getData());
+                $this->getRSSTable()->saveRSSComment($rssComment);
+
+                // Redirect to list of albums
+                return $this->redirect()->toRoute('rss',array(
+                    'action'    => 'showcomments',
+                ));
+            }
+        }
+        return array('form' => $form);
+    }
+
+    public function showCommentsAction()
+    {
+        return new ViewModel(array(
+            'rssComments' => $this->getRSSTable()->fetchAll(),
+        ));
+    }
+
+    public function getRSSTable()
+    {
+        if (!$this->rssTable) {
+            $sm = $this->getServiceLocator();
+            $this->rssTable = $sm->get('RSS\Model\RSSTable');
+        }
+        return $this->rssTable;
     }
 
 }

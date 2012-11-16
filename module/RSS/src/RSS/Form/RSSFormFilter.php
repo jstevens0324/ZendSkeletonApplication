@@ -14,9 +14,26 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class RSSCommentFilter
+class RSSFormFilter
 {
+    public $id;
+    public $author;
+    public $comment;
+    public $email;
     protected $inputFilter;
+
+    public function exchangeArray($data)
+    {
+        $this->id       = (isset($data['id'])) ? $data['id'] : null;
+        $this->author   = (isset($data['author'])) ? $data['author'] : null;
+        $this->comment  = (isset($data['comment'])) ? $data['comment'] : null;
+        $this->email    = (isset($data['email'])) ? $data['email'] : null;
+    }
+
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
 
     public function getInputFilter()
     {
