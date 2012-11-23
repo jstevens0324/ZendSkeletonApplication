@@ -15,5 +15,7 @@ echo $this->form()->openTag($form);
 echo $this->formRow($form->get('author'));
 echo $this->formRow($form->get('comment'));
 echo $this->formRow($form->get('email'));
+echo $this->formRow($form->get('captcha'));
+echo $this->formRow($form->get('security'));
 echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();

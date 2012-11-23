@@ -9,7 +9,12 @@
 
 namespace RSS\Form;
 
+use Zend\Captcha;
+use Zend\Form\Element;
+use Zend\Form\Fieldset;
 use Zend\Form\Form;
+use Zend\InputFilter\Input;
+use Zend\InputFilter\InputFilter;
 
 class RSSComment extends Form
 {
@@ -31,7 +36,7 @@ class RSSComment extends Form
         $this->add(array(
             'name' => 'comment',
             'attributes' => array(
-                'type' => 'text',
+                'type' => 'textarea',
             ),
             'options' => array(
                 'label' => 'Comment Body',
@@ -46,6 +51,23 @@ class RSSComment extends Form
             'options' => array(
                 'label' => 'Author Email',
             ),
+        ));
+
+        $this->add(array(
+            'name' => 'captcha',
+            'type' => 'Zend\Form\Element\Captcha',
+
+            'options' => array(
+                'label' => 'Please verify you are human. ',
+                'captcha' => array(
+                    'class' => 'Dumb',
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Csrf',
+            'name' => 'security'
         ));
 
         $this->add(array(
