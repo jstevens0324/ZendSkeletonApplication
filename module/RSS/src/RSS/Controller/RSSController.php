@@ -17,7 +17,7 @@ use Zend\View\Helper\HeadLink;
 use RSS\Form\RSSComment;
 use RSS\Form\RSSFormFilter;
 use RSS\Model\RSSTable;
-use RSS\Form\User;
+use RSS\Model\User;
 use Zend\Loader\StandardAutoloader;
 use Zend\Form\Annotation\AnnotationBuilder;
 
@@ -142,7 +142,7 @@ class RSSController extends AbstractActionController
 
     public function addFeedCommentAction()
     {
-        /*$form = new RSSComment();
+        $form = new RSSComment();
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
@@ -161,10 +161,7 @@ class RSSController extends AbstractActionController
                     'action'    => 'showcomments',
                 ));
             }
-        }*/
-
-        $builder = new AnnotationBuilder();
-        $form    = $builder->createForm('User');
+        }
         return array('form' => $form);
     }
 

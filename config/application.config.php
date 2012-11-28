@@ -15,5 +15,10 @@ return array(
             './vendor',
         ),
     ),
+    'service_manager' => array(
+        'factories' => array(
+            'Navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+        ),
+    ),
 );
 

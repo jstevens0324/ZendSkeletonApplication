@@ -26,4 +26,26 @@ return array(
                     => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
     ),
+    'navigation' => array(
+        // The DefaultNavigationFactory we configured in (1) uses 'default' as the sitemap key
+        'default' => array(
+            // And finally, here is where we define our page hierarchy
+            'index' => array(
+                'label' => 'Index',
+                'route' => 'application',
+            ),
+            'album' => array(
+                'label' => 'My albums',
+                'route' => 'album/add',
+            ),
+            'radio' => array(
+                'label' => 'My radio',
+                'route' => 'radio',
+            ),
+            'rss' => array(
+                'label' => 'RSS',
+                'route' => 'rss',
+            ),
+        ),
+    ),
 );
